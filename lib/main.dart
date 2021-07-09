@@ -6,6 +6,7 @@ import './pages/categories.dart';
 import './pages/login.dart';
 import './pages/store.dart';
 import './pages/test.dart';
+import 'package:sizer/sizer.dart';
 
 void main() => runApp(
     MyApp()

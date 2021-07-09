@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:carousel_pro/carousel_pro.dart';
 import '../compount/drower.dart';
 import '../pages/store.dart';
+import 'package:sizer/sizer.dart';
 
 class Home extends StatefulWidget{
   State <StatefulWidget> createState(){
@@ -10,64 +11,109 @@ class Home extends StatefulWidget{
 }
 
 class HomeState extends State<Home>{
+  final itemKey = GlobalKey();
+  final controller = ScrollController();
+  var isVisible = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    controller.addListener(() {
+      if(controller.position.atEdge){
+        if(controller.position.pixels>0 && !isVisible) {
+          setState(() {
+            isVisible = true;
+          });
+        }
+      }
+      else if(isVisible){
+        setState(() {
+          isVisible = false;
+        });
+      }
+    });
+  }
    @override
   Widget build(BuildContext context) {
-
-     //----- Founctions -----//
-     var c = 0;
      double width = MediaQuery.of(context).size.width;
      double height = MediaQuery.of(context).size.height;
-
+     //----- Start Functions -----//
+     //1
+     void scrollUp(){
+       final double start = 0;
+       controller.animateTo(start, duration: Duration(milliseconds: 300), curve:Curves.easeIn,);
+     }
+     //2
      Container funHorizantal(img,title){
        return Container(
          width: width*0.4,
          child: ListTile(
-           title: Image.asset(img,height: height*0.18,),
+           title: Image.asset(img,height: height*0.18,fit: BoxFit.fill,),
            subtitle: Container(
-             child: Text(title,style: TextStyle(color: Colors.lightBlue), textAlign: TextAlign.center),
+             padding: EdgeInsets.symmetric(vertical: height * 0.014),
+             child: Text(title,style: TextStyle(color: Colors.black,fontSize: 17,fontWeight: FontWeight.w500), textAlign: TextAlign.center),
            ),
          ),
        );
      }
+     //3
      InkWell funGVInkWell(img,title){
        return InkWell(
-         child: GridTile(child: Image.asset(img), footer: Container(
-           height: height*0.03,
-           color: Colors.blue.withOpacity(0.5),
-           child: Text(title,textAlign: TextAlign.center, style: TextStyle(color: Colors.red),),),
+         child: GridTile(
+           child: Container(
+             margin: EdgeInsets.all(5),
+             child: Card(
+                 child: Column(
+                   children: <Widget>[
+                     Expanded(child: Image.asset(img,alignment: Alignment.center,fit: BoxFit.cover,),),
+                     Container(child: Text(title,textAlign: TextAlign.center, style: TextStyle(color: Colors.black),),),
+                   ],
+                 ),
+             ),
+           ),
          ),
          onTap: (){ Navigator.push(context, MaterialPageRoute(builder: (context) => Store()),);},
-
        );
      }
-
+     //----- End Functions -----//
 
     // throw UnimplementedError();
     return Scaffold(
+      //----appBar----//
+
       appBar: AppBar(
-        // leading: IconButton(icon: Icon(Icons.security) , onPressed: (){} ),
         title: Text("All notes"),
         centerTitle: true,
         //elevation: 500,
         // titleSpacing: 5,
         backgroundColor: Colors.black87,
-        //
-        actions: <Widget>[
-          IconButton(icon: Icon(Icons.search), onPressed: () {}),
-        ],
+        actions: <Widget>[IconButton(icon: Icon(Icons.search), onPressed: () {}),],
       ),
 
       //----drawer----//
 
       drawer: MyDrawer(),
 
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          // Add your onPressed code here!
+        },
+        label: const Text('Total'),
+        icon: const Icon(Icons.shopping_cart_outlined),
+        backgroundColor: Colors.deepOrange,
+      ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+
       //------Body-----//
 
       body: Container(
-        color: Color.fromARGB(220, 20,20,20 ),
+        color: Color.fromARGB(120, 20,20,20 ),
         alignment: Alignment.center,
         //height: 500,
-        child: ListView(
+        child:
+        ListView(
+          controller: controller,
           scrollDirection: Axis.vertical,
           children: <Widget>[
             //##########---Photos---##########//
@@ -76,9 +122,9 @@ class HomeState extends State<Home>{
               width: double.infinity,
               child: Carousel(
                 images: <Widget>[
-                  Image.network('https://wallpapercave.com/wp/wp9198106.jpg', fit: BoxFit.cover),
-                  Image.network('https://i.pinimg.com/originals/f8/9f/b5/f89fb51cbd1f75c783b6cbcc8dc59b48.jpg',fit:BoxFit.cover),
-                  // AssetImage('https://wallpapercave.com/wp/wp2697274.jpg'),
+                  Image.asset("images/offer.jpg",alignment: Alignment.center,fit: BoxFit.fill,),
+                  Image.asset("images/BF.jpg",alignment: Alignment.center,fit: BoxFit.fill,),
+                  Image.asset("images/phones1.jpg",alignment: Alignment.center,fit: BoxFit.fill,),
                 ], // List of images
                 dotColor: Colors.red,
                 dotSize: 7,
@@ -86,86 +132,80 @@ class HomeState extends State<Home>{
                 dotSpacing: 25,
                 dotBgColor: Colors.green.withOpacity(0.2),
                 dotIncreasedColor: Colors.white,
-                //showIndicator: false,
                 indicatorBgPadding: 10,
                 // boxFit: BoxFit.cover, // for offline imgs
                 //---- Radius ----
                 borderRadius: true,
                 radius: Radius.circular(100),
                 overlayShadow: true,
-                overlayShadowColors: Colors.yellow,
               ),
             ),
-            //################---##################//
-            //-----
-            //##########---ListView---##########//
+
+            Divider(height: 0),
 
             SingleChildScrollView(
               child: Column(
                 children: <Widget>[
-                  Center(child: Text('ABC',style: TextStyle(fontSize: 30,color: Colors.lightGreenAccent,),),),
+                  SizedBox(height: height*0.02),
+                  Center(child:Container(child: Text("Categories",style: TextStyle(fontSize: 25,color: Colors.black,fontWeight: FontWeight.w800),),),),
+                  Divider(height: 10),
                   Container(
                     height: height*0.25,
                     width: double.infinity,
                     child: ListView(
                       scrollDirection: Axis.horizontal,
                       children: <Widget>[
-                        funHorizantal('images/2j.jpg',"Kira"),
-                        funHorizantal('images/2j.jpg',"Kira"),
-                        funHorizantal('images/2j.jpg',"Kira"),
-                        funHorizantal('images/2j.jpg',"Kira"),
-                        funHorizantal('images/2j.jpg',"Kira"),
+                        funHorizantal('images/IPhone.jpg',"Apple"),
+                        funHorizantal('images/Samsung.jpeg',"Samsung"),
+                        funHorizantal('images/Huawei.jpg',"Huawei"),
+                        funHorizantal('images/OnePlus.jpg',"OnePlus"),
+                        funHorizantal('images/oppo.jpg',"Oppo"),
+                        funHorizantal('images/Tecno.png',"Tecno"),
+                        funHorizantal('images/vivo.png',"Vivo"),
+                        funHorizantal('images/xiaomi.png',"Xiaomi"),
+                        funHorizantal('images/lg.jpg',"LG"),
+                        funHorizantal('images/nokia.jpg',"Nokia"),
+                        funHorizantal('images/Lenovo.png',"Lenovo"),
                       ],
                     ),
                   ),
                   //------------------
-                  Center(child: Text("Least products",style: TextStyle(fontSize: 20,color: Colors.blue),),),
-                  SizedBox(height: height*0.03),
+                  Divider(height: 0),
+                  Center(child: Text("Stores",style: TextStyle(fontSize: 25,color: Colors.black,fontWeight: FontWeight.w800),),),
+                  Divider(height: 9),
                   Container(
                     height: height*0.6,
                     child: GridView(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
                       children: <Widget>[
                         //----
-                        funGVInkWell("images/1j.jpg"," title1"),
-                        funGVInkWell("images/1j.jpg"," title2"),
-                        funGVInkWell("images/1j.jpg"," title3"),
-                        funGVInkWell("images/1j.jpg"," title4"),
-                        funGVInkWell("images/1j.jpg"," title5"),
+                        funGVInkWell("images/store1.jpg","Store1"),
+                        funGVInkWell("images/store2.jpg","Store2"),
+                        funGVInkWell("images/store3.jpg","Store3"),
+                        funGVInkWell("images/1j.jpg","Store4"),
+                        funGVInkWell("images/2j.jpg","Store5"),
+                        funGVInkWell("images/2j.jpg","Store5"),
+                        funGVInkWell("images/2j.jpg","Store5"),
+                        funGVInkWell("images/2j.jpg","Store5"),
+                        funGVInkWell("images/2j.jpg","Store5"),
                         //----
                       ],
                     ),
                   ),
-                  //-----------//
                   Center(
-                    heightFactor: height*0.0025,
-                    child: Text("|=Title=|",style: TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 20,),),
+                    child: Text("AMMAR", style:TextStyle(color: Colors.black, fontSize: 20,),),
                   ),
-                  Center(
-                    child: Text('$c', style:TextStyle(color: Colors.yellow, fontSize: 50,),),
-                  ),
-                  Center(
-                    child: Text("AMMAR", style:TextStyle(color: Colors.lightBlue, fontSize: 20,),),
-                  ),
-
                 ],
               ),
             ),
-            //---
-
+            // Padding(
+            //   padding: const EdgeInsets.only(right: 230),
+            //   child: Visibility(visible: isVisible,
+            //     child: FloatingActionButton(child: Icon(Icons.arrow_upward_sharp), onPressed: scrollUp,),
+            //   ),
+            // ),
           ],
-
         ),
-      ),
-
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){
-          setState(() {
-            c+=2;
-          });
-          //print('$c');
-        },
-        child: Icon(Icons.add),
       ),
     );
   }

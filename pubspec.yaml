@@ -29,6 +29,8 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
   carousel_pro: ^1.0.0
+  sizer: ^2.0.13
+  will_tabbar: ^1.0.4
 
 dev_dependencies:
   flutter_test:
@@ -55,6 +57,22 @@ flutter:
     - images/5p.png
     - images/6p.png
     - images/IPhone.jpg
+    - images/Tecno.png
+    - images/Samsung.jpeg
+    - images/oppo.jpg
+    - images/OnePlus.jpg
+    - images/nokia.jpg
+    - images/lg.jpg
+    - images/Lenovo.png
+    - images/Huawei.jpg
+    - images/vivo.png
+    - images/xiaomi.png
+    - images/BF.jpg
+    - images/phones1.jpg
+    - images/offer.jpg
+    - images/store1.jpg
+    - images/store2.jpg
+    - images/store3.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

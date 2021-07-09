@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../compount/drower.dart';
+import 'package:sizer/sizer.dart';
+
 class LogIn extends StatefulWidget {
   @override
   _LogInState createState() => _LogInState();
@@ -19,8 +21,12 @@ class _LogInState extends State<LogIn> {
         elevation: 50,
         // titleSpacing: 5,
         backgroundColor: Colors.black87,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: (){Navigator.of(context).pushReplacementNamed('homePage');},
+        ),
       ),
-      drawer: MyDrawer(),
+      // drawer: MyDrawer(),
       body: Container(
         child: ListView(
           children: <Widget>[

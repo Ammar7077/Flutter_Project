@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../compount/drower.dart';
+import 'package:sizer/sizer.dart';
 
 class Categories extends StatefulWidget {
   @override
@@ -56,14 +57,18 @@ class _CategoriesState extends State<Categories> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Categories'),
+        title: Text('History'),
         centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: (){Navigator.of(context).pushReplacementNamed('homePage');},
+        ),
       ),
-      drawer: MyDrawer(),
+      // drawer: MyDrawer(),
       body: ListView(
         children: <Widget>[
-          historyRow("images/1j.jpg", "_Name_", "_What is_ && _how much_", "price","5/5/777"),
-          historyRow("images/1j.jpg", "_Name_", "_What is_ && _how much_", "price","5/5/777"),
+          historyRow("images/1j.jpg", "_Name of store_", "_What is_ && _how much_", "price: _here_","_date_"),
+          historyRow("images/store2.jpg", "Store2", "IPhone  x2", "price: 80.5","11/6/7888"),
         ],
       ),
     );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:sizer/sizer.dart';
 
 class MyDrawer extends StatelessWidget {
   @override
@@ -59,9 +60,9 @@ class MyDrawer extends StatelessWidget {
             ),
             Divider(height: 0,),
             ListTile(
-              leading: Icon(Icons.category),
+              leading: Icon(Icons.history_outlined),
               title: Text(
-                "Categories",
+                "History",
                 style: TextStyle(color: Colors.blue),
               ),
               //
@@ -108,6 +109,16 @@ class MyDrawer extends StatelessWidget {
               },
             ),
             Divider(height: 0),
+            ListTile(
+              leading: Icon(Icons.logout,color: Colors.red,),
+              title: Text(
+                "Log Out",
+                style: TextStyle(color: Colors.red),
+              ),
+              onTap: () {
+                //
+              },
+            ),
             //------Log In ----//
           ],
         ),
